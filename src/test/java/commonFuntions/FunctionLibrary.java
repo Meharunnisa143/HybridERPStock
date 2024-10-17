@@ -85,7 +85,7 @@ public class FunctionLibrary {
 	//method for buttons,checkbox,radiobuttons,images,links
 	public static void clickAction(String LocatorType, String LocatorValue)
 	{
-		if(LocatorType.equalsIgnoreCase("xpath"))
+		if(LocatorType.equalsIgnoreCase("xpath")) 
 		{
 			driver.findElement(By.xpath(LocatorValue)).click();
 		}
