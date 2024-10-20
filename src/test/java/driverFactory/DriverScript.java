@@ -70,7 +70,27 @@ public void startTest() throws Throwable
 						FunctionLibrary.captureStock(LType, Lvalue);
 					}
 					if(ObjectType.equalsIgnoreCase("stockTable"))
+					{
 						FunctionLibrary.stockTable();
+					}
+					if(ObjectType.equalsIgnoreCase("capturesup"))
+					{
+						FunctionLibrary.capturesup(LType, Lvalue);
+					}
+					if(ObjectType.equalsIgnoreCase("suppliertable"))
+					{
+						FunctionLibrary.suppliertable();
+					}
+					if(ObjectType.equalsIgnoreCase("capturecus"))
+					{
+						FunctionLibrary.capturecus(LType, Lvalue);
+					}
+					if(ObjectType.equalsIgnoreCase("customertable"))
+					{
+						FunctionLibrary.customertable();
+					}
+					
+					
 					//write as pass into status cell in TCModule sheet
 					xl.setCellData(TCModule, j, 5, "pass", outputpath);
 					Module_Status = "True";

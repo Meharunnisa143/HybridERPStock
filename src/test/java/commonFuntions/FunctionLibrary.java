@@ -20,9 +20,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.Reporter;
-
-
-
 public class FunctionLibrary {
 	public static WebDriver driver;
 	public static Properties conpro;
@@ -120,7 +117,7 @@ public class FunctionLibrary {
 	//method for close browser
 	public static void closeBrowser()
 	{
-		driver.quit();
+		driver.close();
 	}
 	//method for listboxes
     public static void dropDownAction(String LocatorType, String LocatorValue, String TestData)
@@ -193,5 +190,88 @@ public class FunctionLibrary {
 			System.out.println(a.getMessage());
 		}
     	
+    }
+    //method for capture supplier number into notepad
+    public static void capturesup(String LocatorType, String LocatorValue) throws Throwable
+    {
+    	String supplierNum ="";
+    	if(LocatorType.equalsIgnoreCase("xpath"))
+    	{
+    		supplierNum = driver.findElement(By.xpath(LocatorValue)).getAttribute("value");
+    	}
+    	if(LocatorType.equalsIgnoreCase("name"))
+    	{
+    		supplierNum = driver.findElement(By.name(LocatorValue)).getAttribute("value");
+    	}
+    	if(LocatorType.equalsIgnoreCase("id"))
+    	{
+    		supplierNum = driver.findElement(By.id(LocatorValue)).getAttribute("value");
+    	}
+    	FileWriter fw = new FileWriter("./CaptureData/suppliernumber.txt");
+    	BufferedWriter bw = new BufferedWriter(fw);
+    	bw.write(supplierNum);
+    	bw.flush();
+    	bw.close();
+    }
+    //method for reading supplier number and verifying supplier table
+    public static void suppliertable() throws Throwable
+    {
+    	//read supplier number from above notepad
+    	FileReader fr = new FileReader("./CaptureData/suppliernumber.txt");
+    	BufferedReader br = new BufferedReader(fr);
+    	String Exp_Data = br.readLine();
+    	if(!driver.findElement(By.xpath(conpro.getProperty("search-textbox"))).isDisplayed())
+    		driver.findElement(By.xpath(conpro.getProperty("search-panel"))).click();
+    	driver.findElement(By.xpath(conpro.getProperty("search-textbox"))).clear();
+    	driver.findElement(By.xpath(conpro.getProperty("search-textbox"))).sendKeys(Exp_Data);
+    	driver.findElement(By.xpath(conpro.getProperty("search-button"))).click();
+    	Thread.sleep(3000);
+    	String Act_Data = driver.findElement(By.xpath("//table[@class='table ewTable']/tbody/tr[1]/td[6]/div/span/span")).getText();
+    	Reporter.log(Exp_Data+"      "+Act_Data,true);
+    	try {
+			Assert.assertEquals(Act_Data, Exp_Data, "Supplier number notfound in table");
+		} catch (AssertionError a) {
+			System.out.println(a.getLocalizedMessage());
+		}
+    }
+    public static void capturecus(String LocatorType, String LocatorVlaue) throws Throwable
+    {
+    	String Customernum = "";
+    	if(LocatorType.equalsIgnoreCase("xpath"))
+    	{
+    		Customernum= driver.findElement(By.xpath(LocatorVlaue)).getAttribute("value");
+    	}
+    	if(LocatorType.equalsIgnoreCase("name"))
+    	{
+    		Customernum= driver.findElement(By.name(LocatorVlaue)).getAttribute("value");
+    	}
+    	if(LocatorType.equalsIgnoreCase("id"))
+    	{
+    		Customernum= driver.findElement(By.id(LocatorVlaue)).getAttribute("value");
+    	}
+    	FileWriter fw = new FileWriter("./CaptureData/customernumber.txt");
+    	BufferedWriter bw = new BufferedWriter(fw);
+    	bw.write(Customernum);
+    	bw.flush();
+    	bw.close();
+    }
+    public static void customertable() throws Throwable
+    {
+    	FileReader fr = new FileReader("./CaptureData/customernumber.txt");
+    	BufferedReader br = new BufferedReader(fr);
+    	String Exp_Data = br.readLine();
+    	if(!driver.findElement(By.xpath(conpro.getProperty("search-textbox"))).isDisplayed())
+    		driver.findElement(By.xpath(conpro.getProperty("search-panel"))).click();
+    	driver.findElement(By.xpath(conpro.getProperty("search-textbox"))).clear();
+    	driver.findElement(By.xpath(conpro.getProperty("search-textbox"))).sendKeys(Exp_Data);
+    	driver.findElement(By.xpath(conpro.getProperty("search-button"))).click();
+    	Thread.sleep(3000);
+    	String Act_Data = driver.findElement(By.xpath("//table[@class='table ewTable']/tbody/tr[1]/td[5]/div/span/span")).getText();
+    	Reporter.log(Act_Data+"      "+Exp_Data,true);
+    	try {
+			Assert.assertEquals(Act_Data, Exp_Data, "customer number notfound in table");
+		} catch (AssertionError e) {
+			System.out.println(e.getLocalizedMessage());
+		}
     }
 }
